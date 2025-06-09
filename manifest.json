@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "Rush-style mode for Battlefield Portal with PvP-AI support.",
   "main": "Plugin.js",
-  "scripts": [],
+  "type": "module",
   "author": "bbk3391"
 }
