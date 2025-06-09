@@ -1,19 +1,24 @@
-(function main(api) {
-  const { game, player, team, event, vars, workspace } = api;
+// BF Portal Rush - PvP-AI Rush-Style Mode by bbk3391 using Portal Extensions 2.0
+
+export default function main(api) {
+  const { game, player, event, workspace } = api;
 
   const STATE = {
     phase: 0,
     activeMCOMs: [],
     attackers: 1,
     defenders: 2,
-    mcomSets: [["A1", "A2"], ["B1", "B2"], ["C1", "C2"]],
+    mcomSets: [
+      ["A1", "A2"],
+      ["B1", "B2"],
+      ["C1", "C2"]
+    ],
     mcomDestroyed: new Set(),
     tickets: 100,
     ticketDrain: 1
   };
 
-  // Register workspace blocks
-  workspace.addBlock("Match Start", () => {
+  game.on("matchStart", () => {
     STATE.phase = 0;
     STATE.mcomDestroyed.clear();
     STATE.tickets = 100;
@@ -21,8 +26,9 @@
     game.broadcast("Attackers: Destroy the objectives!");
   });
 
-  workspace.addBlock("Player Killed", (e) => {
-    if (e.player.team === STATE.attackers) {
+  player.on("killed", (event) => {
+    const p = event.player;
+    if (p.team === STATE.attackers) {
       STATE.tickets -= STATE.ticketDrain;
       if (STATE.tickets <= 0) {
         endGame(STATE.defenders);
@@ -30,8 +36,8 @@
     }
   });
 
-  workspace.addBlock("Player Chat", (e) => {
-    const { player: p, message } = e;
+  player.on("chat", (event) => {
+    const { player, message } = event;
     if (message.startsWith("/destroy ")) {
       const mcom = message.split(" ")[1].toUpperCase();
       if (STATE.activeMCOMs.includes(mcom) && !STATE.mcomDestroyed.has(mcom)) {
@@ -42,15 +48,15 @@
     }
   });
 
-  workspace.addBlock("Player Initial Spawn", (e) => {
-    assignLoadout(e.player);
+  player.on("initialSpawn", (event) => {
+    assignLoadout(event.player);
   });
 
-  workspace.addBlock("Player Join", (e) => {
-    assignLoadout(e.player);
+  event.on("playerJoin", (event) => {
+    const p = event.player;
+    assignLoadout(p);
   });
 
-  // Internal helper functions
   function activateMCOMSet(index) {
     STATE.phase = index;
     STATE.activeMCOMs = STATE.mcomSets[index];
@@ -86,4 +92,14 @@
       p.inventory.equipGadget("ATMine");
     }
   }
+
+  // Block to indicate script is loaded
+  workspace.addBlock({
+    id: "rush_initialized",
+    type: "text",
+    position: { x: 100, y: 100 },
+    fields: {
+      TEXT: "BF Portal Rush mode loaded and running."
+    }
+  });
 }
