@@ -1,10 +1,7 @@
 {
-    "id": "custom-rush-pvp-ai",
-    "name": "Custom Rush PvP-AI Mode",
-    "version": "1.0.1",
-    "description": "BF3 Engineers attack with EOD bots vs BC2 Engineers defending with M1 Garands and AT mines. Full PvP-AI support and Rush-style flow.",
-    "entry": "plugin.js",
-    "scripts": {
-        "plugin.js": "// Battlefield Portal Custom Rush PvP-AI Mode\n// Full game logic setup, assumes portal extensions plugin environment\n\nconst bf2042 = getPortal();\n\nbf2042.onGameStart(() => {\n    bf2042.log(\"Starting Custom Rush PvP-AI mode...\");\n    // Setup initial game state\n    initializePvPAIGame();\n});\n\nfunction initializePvPAIGame() {\n    // Team setup\n    bf2042.setTeam(1, {\n        faction: \"BF3\",\n        role: \"Engineer\",\n        gadgets: [\"EODBot\"],\n        isAttacker: true,\n        maxPlayers: 20,\n        aiFill: true,\n    });\n    bf2042.setTeam(2, {\n        faction: \"BC2\",\n        role: \"Engineer\",\n        weapons: [\"M1Garand\"],\n        gadgets: [\"ATMine\"],\n        isDefender: true,\n        maxPlayers: 20,\n        aiFill: true,\n    });\n\n    // Objective sets (3 sets of 2 MCOMs)\n    bf2042.setObjectives([\n        { set: 1, mcoms: [\"A\", \"B\"], mapAreas: [\"SectorAlpha\"] },\n        { set: 2, mcoms: [\"C\", \"D\"], mapAreas: [\"SectorBravo\"] },\n        { set: 3, mcoms: [\"E\", \"F\"], mapAreas: [\"SectorCharlie\"] }\n    ]);\n\n    // Win conditions\n    bf2042.setWinConditions({\n        attackersWinOnAllMCOMsDestroyed: true,\n        defendersWinOnTicketDrain: true,\n        ticketCount: 100\n    });\n\n    // PvP-AI behavior\n    bf2042.enablePvPAI({\n        replaceBotsWithPlayers: true,\n        botSkill: \"normal\"\n    });\n\n    // Music/radio (Valparaiso)\n    bf2042.onMapLoad(\"Valparaiso\", () => {\n        bf2042.playMusic(\"Vietnam_War_Radio\", {\n            volume: 0.5,\n            loop: true\n        });\n    });\n\n    // Intro lines (Bad Company 2 style)\n    bf2042.onGameStart(() => {\n        bf2042.playVoiceLine(\"Sweetwater\", \"I signed up for explosions, not cardio!\");\n        bf2042.playVoiceLine(\"Haggard\", \"Lock and load boys, we're gonna burn this place down!\");\n    });\n}"
-    }
+  "name": "BF Portal Rush",
+  "author": "bbk3391",
+  "description": "Custom Rush PvP-AI mode for Battlefield Portal.",
+  "version": "1.0.0",
+  "entry": "plugin.js"
 }
