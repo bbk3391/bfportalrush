@@ -1,5 +1,6 @@
 {
-  "name": "bfportalrush",
+  "id": "bfportalrush",
+  "name": "BF Portal Rush",
   "version": "1.0.0",
   "description": "Rush-style mode for Battlefield Portal with PvP-AI support.",
   "main": "Plugin.js",
