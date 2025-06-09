@@ -1,7 +1,8 @@
 {
+  "id": "bbk.portalrush",
   "name": "BF Portal Rush",
   "author": "bbk3391",
   "description": "Custom Rush PvP-AI mode for Battlefield Portal.",
   "version": "1.0.0",
-  "entry": "plugin.js"
+  "main": "plugin.js"
 }
