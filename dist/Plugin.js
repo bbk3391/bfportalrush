@@ -1,4 +1,4 @@
-export default function main(api) {
+default function main(api) {
   const { game, player, team, event, vars, workspace } = api;
 
   const STATE = {
