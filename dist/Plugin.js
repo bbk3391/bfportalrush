@@ -1,4 +1,4 @@
-default function main(api) {
+(function main(api) {
   const { game, player, team, event, vars, workspace } = api;
 
   const STATE = {
